@@ -123,12 +123,10 @@ class NoteByIdTests(APITestCase):
         self.assertEqual(noteHeading, Constants.noteHeading)
         self.assertEqual(noteContent, Constants.noteContent)
 
-
     def test_NoteByIdGET_failureNoteNotFound(self):
         response = self.client.get('/api/notes/?id=5', headers={'token': Constants.token})
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data[Constants.errorMessage], Constants.noteNotFoundMessage)
-
 
     def test_NoteByIdGET_failureNotUsersNote(self):
         response = self.client.get('/api/notes/?id=4', headers={'token': Constants.token})
@@ -162,6 +160,7 @@ class NoteByIdTests(APITestCase):
 
 class ShareNoteTest(APITestCase):
     fixtures = ['notes/test.json']
+
     def test_ShareNote_success(self):
         testData = {
             Constants.noteId: Constants.one
@@ -179,11 +178,11 @@ class SearchUsingKeyWordsTest(APITestCase):
         response = self.client.get('/api/search?q=sometimes+humour', headers={'token': Constants.token})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         noteIds = response.data['NoteIds']
-        self.assertEqual(len(noteIds),2)
+        self.assertEqual(len(noteIds), 2)
 
     def test_SearchUsingKeyWords_successWithRandomWords(self):
         response = self.client.get('/api/search?q=abccd+xtyzz', headers={'token': Constants.token})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         noteIds = response.data['NoteIds']
-        self.assertEqual(len(noteIds),0)
+        self.assertEqual(len(noteIds), 0)
 # Create your tests here.
